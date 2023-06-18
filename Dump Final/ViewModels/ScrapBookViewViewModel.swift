@@ -5,7 +5,8 @@ import UIKit
 class ScrapBookViewViewModel: ObservableObject{
     
     @Published var showingNewItemView = false
-    @Published var retrievedImages = [UIImage]()
+    @Published var retrievedImagePaths: [String] = []
+    @Published var retrievedImages: [UIImage] = []
     init() {}
     
     

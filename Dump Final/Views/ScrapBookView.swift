@@ -18,20 +18,18 @@ struct ScrapBookView: View {
                     .background(Color.green)
                     .cornerRadius(10)
             })
-            .sheet(isPresented: $isShowingNewShoutView) {
-                UploadView(newItemPresented: $isShowingNewShoutView)
-            }
             .padding()
             
             Divider()
             
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                    ForEach(viewModel.retrievedImages, id: \.self) { image in
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
+                    ForEach(viewModel.retrievedImagePaths, id: \.self) { imagePath in
+                        Text(imagePath)
+                            .font(.caption)
+                            .foregroundColor(.black)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Color.gray.opacity(0.1))
                             .cornerRadius(10)
                     }
                 }
@@ -41,48 +39,38 @@ struct ScrapBookView: View {
         .onAppear {
             retrievePhotos()
         }
+        .sheet(isPresented: $isShowingNewShoutView) {
+            UploadView(newItemPresented: $isShowingNewShoutView)
+        }
     }
     
     func retrievePhotos() {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
-        
+
         let db = Firestore.firestore()
         let storageRef = Storage.storage().reference()
-        
+
         let userRef = db.collection("users").document(userID)
         let imagesRef = userRef.collection("images")
-        
+
         imagesRef.getDocuments { snapshot, error in
             if let error = error {
                 print("Error retrieving photos: \(error)")
                 return
             }
-            
+
             var paths = [String]()
-            
+
             for doc in snapshot?.documents ?? [] {
                 if let path = doc.data()["url"] as? String {
                     paths.append(path)
                 }
             }
-            
-            for path in paths {
-                let fileRef = storageRef.child(path)
-                
-                fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
-                    if let error = error {
-                        print("Error retrieving photo data: \(error)")
-                        return
-                    }
-                    
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            viewModel.retrievedImages.append(image)
-                        }
-                    }
-                }
+
+            DispatchQueue.main.async {
+                viewModel.retrievedImagePaths = paths
             }
         }
     }
@@ -93,4 +81,6 @@ struct ScrapBookView_Previews: PreviewProvider {
         ScrapBookView()
     }
 }
+
+
 
