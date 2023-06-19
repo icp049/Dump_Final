@@ -9,25 +9,22 @@ struct ScrapBookView: View {
     
     var body: some View {
         VStack {
-            Button(action: {
+            RUButton(title: "Upload", background: .green) {
                 isShowingNewShoutView = true
-            }, label: {
-                Text("Upload")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.green)
-                    .cornerRadius(10)
-            })
+            }
+            .sheet(isPresented: $isShowingNewShoutView) {
+                UploadView(newItemPresented: $isShowingNewShoutView)
+            }
             .padding()
             
             Divider()
             
             ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                    ForEach(viewModel.retrievedImagePaths, id: \.self) { imagePath in
-                        Text(imagePath)
-                            .font(.caption)
-                            .foregroundColor(.black)
+                LazyVGrid(columns: gridLayout, spacing: 20) {
+                    ForEach(viewModel.retrievedImages.reversed(), id: \.self) { image in
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(10)
@@ -39,38 +36,50 @@ struct ScrapBookView: View {
         .onAppear {
             retrievePhotos()
         }
-        .sheet(isPresented: $isShowingNewShoutView) {
-            UploadView(newItemPresented: $isShowingNewShoutView)
-        }
     }
+    
+    private let gridLayout: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     func retrievePhotos() {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
-
+        
         let db = Firestore.firestore()
         let storageRef = Storage.storage().reference()
-
+        
         let userRef = db.collection("users").document(userID)
-        let imagesRef = userRef.collection("images")
-
-        imagesRef.getDocuments { snapshot, error in
+        
+        userRef.collection("images").getDocuments { snapshot, error in
             if let error = error {
                 print("Error retrieving photos: \(error)")
                 return
             }
-
+            
             var paths = [String]()
-
+            
             for doc in snapshot?.documents ?? [] {
-                if let path = doc.data()["url"] as? String {
-                    paths.append(path)
+                if let fileName = doc["url"] as? String {
+                    let imagePath = "users/\(userID)/images/\(fileName)"
+                    paths.append(imagePath)
                 }
             }
-
-            DispatchQueue.main.async {
-                viewModel.retrievedImagePaths = paths
+            
+            for path in paths {
+                let fileRef = storageRef.child(path)
+                
+                fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                    if let error = error {
+                        print("Error retrieving photo data: \(error)")
+                        return
+                    }
+                    
+                    if let data = data, let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            viewModel.retrievedImages.append(image)
+                        }
+                    }
+                }
             }
         }
     }
@@ -81,6 +90,4 @@ struct ScrapBookView_Previews: PreviewProvider {
         ScrapBookView()
     }
 }
-
-
 
