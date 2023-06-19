@@ -68,15 +68,20 @@ struct ScrapBookView: View {
         
         let userRef = db.collection("users").document(userID)
         
-        userRef.collection("images").getDocuments { snapshot, error in
+        userRef.collection("images").order(by: "createdAt", descending: true).addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error retrieving photos: \(error)")
                 return
             }
             
+            guard let documents = snapshot?.documents else {
+                print("No documents found")
+                return
+            }
+            
             var paths = [String]()
             
-            for doc in snapshot?.documents ?? [] {
+            for doc in documents {
                 if let fileName = doc["url"] as? String {
                     let imagePath = "users/\(userID)/images/\(fileName)"
                     paths.append(imagePath)
@@ -101,6 +106,7 @@ struct ScrapBookView: View {
             }
         }
     }
+
 }
 
 struct ScrapBookView_Previews: PreviewProvider {
