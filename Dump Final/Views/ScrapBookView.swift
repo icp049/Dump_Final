@@ -8,37 +8,55 @@ struct ScrapBookView: View {
     @State private var isShowingNewShoutView = false
     
     var body: some View {
-        VStack {
-            RUButton(title: "Upload", background: .green) {
-                isShowingNewShoutView = true
+        NavigationView {
+            GeometryReader { geometry in
+                VStack {
+                    ScrollView {
+                        LazyVGrid(columns: gridLayout(geometry.size), spacing: 2) {
+                            ForEach(viewModel.retrievedImages.reversed(), id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width / 3 - 1, height: geometry.size.width / 3 - 1)
+                                    .clipped()
+                                    .cornerRadius(4)
+                            }
+                        }
+                    }
+                    .padding(2)
+                }
+            }
+            .navigationTitle("Scrapbook")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    RUButton(title: "Upload", background: .green) {
+                        isShowingNewShoutView = true
+                    }
+                }
             }
             .sheet(isPresented: $isShowingNewShoutView) {
                 UploadView(newItemPresented: $isShowingNewShoutView)
             }
-            .padding()
-            
-            Divider()
-            
-            ScrollView {
-                LazyVGrid(columns: gridLayout, spacing: 20) {
-                    ForEach(viewModel.retrievedImages.reversed(), id: \.self) { image in
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(10)
-                    }
-                }
-                .padding()
+            .onAppear {
+                retrievePhotos()
             }
-        }
-        .onAppear {
-            retrievePhotos()
         }
     }
     
-    private let gridLayout: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+    private func gridLayout(_ size: CGSize) -> [GridItem] {
+        let columns: Int = {
+            if size.width < 400 {
+                return 3
+            } else if size.width < 600 {
+                return 4
+            } else {
+                return 5
+            }
+        }()
+        
+        return Array(repeating: .init(.flexible()), count: columns)
+    }
     
     func retrievePhotos() {
         guard let userID = Auth.auth().currentUser?.uid else {
