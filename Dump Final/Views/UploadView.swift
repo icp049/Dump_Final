@@ -135,7 +135,7 @@ func UploadPhoto(image: UIImage, completion: @escaping () -> Void) {
     let imageDocumentRef = userRef.collection("images").document() // Create a new document inside the "images" collection
     
     uploadTask.observe(.success) { snapshot in
-        imageDocumentRef.setData(["url": fileName]) { error in
+        imageDocumentRef.setData(["url": fileName, "createdAt": FieldValue.serverTimestamp()]){ error in
             if let error = error {
                 print("Error adding image URL to user's images collection: \(error)")
             } else {
