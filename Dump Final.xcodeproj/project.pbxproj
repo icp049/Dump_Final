@@ -50,7 +50,6 @@
 		A631E5C42A3EC2EE0099872F /* NewShoutViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5BB2A3EC2ED0099872F /* NewShoutViewViewModel.swift */; };
 		A631E5C52A3EC2EE0099872F /* ShoutItemViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5BC2A3EC2ED0099872F /* ShoutItemViewViewModel.swift */; };
 		A631E5C62A3EC2EE0099872F /* ShoutViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5BD2A3EC2ED0099872F /* ShoutViewViewModel.swift */; };
-		A631E5C72A3EC2EE0099872F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5BE2A3EC2EE0099872F /* ImagePicker.swift */; };
 		A631E5C82A3EC2EE0099872F /* MainViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5BF2A3EC2EE0099872F /* MainViewViewModel.swift */; };
 		A631E5C92A3EC2EE0099872F /* ProfileViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5C02A3EC2EE0099872F /* ProfileViewViewModel.swift */; };
 		A631E5D52A3EC3030099872F /* ShoutItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5CA2A3EC3010099872F /* ShoutItemView.swift */; };
@@ -66,6 +65,7 @@
 		A631E5DF2A3EC3030099872F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631E5D42A3EC3030099872F /* ProfileView.swift */; };
 		A631E5E32A3EE4020099872F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A631E5E22A3EE4020099872F /* GoogleService-Info.plist */; };
 		A631E5E62A40381E0099872F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = A631E5E52A40381E0099872F /* SDWebImageSwiftUI */; };
+		A632B9262A4180640096E3BC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9252A4180640096E3BC /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +105,6 @@
 		A631E5BB2A3EC2ED0099872F /* NewShoutViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewShoutViewViewModel.swift; sourceTree = "<group>"; };
 		A631E5BC2A3EC2ED0099872F /* ShoutItemViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoutItemViewViewModel.swift; sourceTree = "<group>"; };
 		A631E5BD2A3EC2ED0099872F /* ShoutViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoutViewViewModel.swift; sourceTree = "<group>"; };
-		A631E5BE2A3EC2EE0099872F /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		A631E5BF2A3EC2EE0099872F /* MainViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewViewModel.swift; sourceTree = "<group>"; };
 		A631E5C02A3EC2EE0099872F /* ProfileViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewViewModel.swift; sourceTree = "<group>"; };
 		A631E5CA2A3EC3010099872F /* ShoutItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoutItemView.swift; sourceTree = "<group>"; };
@@ -120,6 +119,7 @@
 		A631E5D32A3EC3030099872F /* NewShoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewShoutView.swift; sourceTree = "<group>"; };
 		A631E5D42A3EC3030099872F /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A631E5E22A3EE4020099872F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A632B9252A4180640096E3BC /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,7 +274,6 @@
 		A631E5AF2A3EC26D0099872F /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				A631E5BE2A3EC2EE0099872F /* ImagePicker.swift */,
 				A631E5B82A3EC2ED0099872F /* LoginViewViewModel.swift */,
 				A631E5BF2A3EC2EE0099872F /* MainViewViewModel.swift */,
 				A631E5BB2A3EC2ED0099872F /* NewShoutViewViewModel.swift */,
@@ -283,6 +282,7 @@
 				A631E5BA2A3EC2ED0099872F /* ScrapBookViewViewModel.swift */,
 				A631E5BC2A3EC2ED0099872F /* ShoutItemViewViewModel.swift */,
 				A631E5BD2A3EC2ED0099872F /* ShoutViewViewModel.swift */,
+				A632B9252A4180640096E3BC /* ImagePicker.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -454,6 +454,7 @@
 			files = (
 				A631E5B72A3EC2D70099872F /* Extensions.swift in Sources */,
 				A631E5C12A3EC2EE0099872F /* LoginViewViewModel.swift in Sources */,
+				A632B9262A4180640096E3BC /* ImagePicker.swift in Sources */,
 				A631E5C52A3EC2EE0099872F /* ShoutItemViewViewModel.swift in Sources */,
 				A631E5C32A3EC2EE0099872F /* ScrapBookViewViewModel.swift in Sources */,
 				A631E5C42A3EC2EE0099872F /* NewShoutViewViewModel.swift in Sources */,
@@ -467,7 +468,6 @@
 				A631E5DC2A3EC3030099872F /* RUButton.swift in Sources */,
 				A631E54C2A3EC0890099872F /* Dump_FinalApp.swift in Sources */,
 				A631E5C82A3EC2EE0099872F /* MainViewViewModel.swift in Sources */,
-				A631E5C72A3EC2EE0099872F /* ImagePicker.swift in Sources */,
 				A631E5C92A3EC2EE0099872F /* ProfileViewViewModel.swift in Sources */,
 				A631E5DA2A3EC3030099872F /* MainView.swift in Sources */,
 				A631E5D52A3EC3030099872F /* ShoutItemView.swift in Sources */,

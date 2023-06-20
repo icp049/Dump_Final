@@ -1,54 +1,73 @@
-//
-//  ProfileView.swift
-//  Dump
-//
-//  Created by Ian Pedeglorio on 2023-06-08.
-//
-
 import SwiftUI
 
-
-
 struct ProfileView: View {
-    
     @StateObject var viewModel = ProfileViewViewModel()
+    @State private var showImagePicker = false
+    @State private var selectedImage: UIImage?
+    
     var body: some View {
-        NavigationView{
-            VStack{
-                if let user = viewModel.user{
+        NavigationView {
+            VStack {
+                if let user = viewModel.user {
                     // Avatar
-                    Image(systemName: "person.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(Color.blue)
-                        .frame(width: 125, height: 125)
-                       
+                  
+                    ZStack {
+                        Circle()
+                            .foregroundColor(Color.blue)
+                            .frame(width: 125, height: 125)
+                        
+                        if let image = selectedImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
+                                .frame(width: 120, height: 120)
+                        } else {
+                            Image(systemName: "person.circle")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(Color.blue)
+                                .frame(width: 125, height: 125)
+                        }
+                        
+                        Button(action: {
+                            showImagePicker = true
+                        }) {
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(Color.white)
+                                .frame(width: 30, height: 30)
+                                .background(Color.blue)
+                                .clipShape(Circle())
+                                .padding(4)
+                                .offset(x: 45, y: 45)
+                        }
+                        .sheet(isPresented: $showImagePicker) {
+                            ImagePicker1(sourceType: .photoLibrary) { image in
+                                selectedImage = image
+                            }
+                        }
+                    }
+
                     
-                    
-                    //all the info
-                    VStack(alignment: .leading){
-                        HStack{
+                    // All the info
+                    VStack(alignment: .leading) {
+                        HStack {
                             Text("Name")
                             Text(user.name)
-                            
                         }
-                        HStack{
+                        HStack {
                             Text("Email")
                             Text(user.email)
                         }
-                        
                     }
                     
-                    
-                    
-                    //sign out button
-                    Button{
-                        //action for signout
-                        
+                    // Sign out button
+                    Button {
                         viewModel.logOut()
-                        
                     } label: {
-                        ZStack{
+                        ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundColor(Color.yellow)
                             
@@ -57,22 +76,22 @@ struct ProfileView: View {
                                 .bold()
                         }
                     }
+                    .frame(width: 120, height: 40)
                 } else {
                     Text("Loading Profile")
                 }
-                    
-                }
-            .navigationTitle("My Profile")
             }
+            .navigationTitle("My Profile")
+        }
         .onAppear {
             viewModel.fetchUser()
         }
-        }
     }
-
+}
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView()
     }
 }
+
