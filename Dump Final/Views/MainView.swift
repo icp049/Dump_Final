@@ -26,11 +26,11 @@ struct MainView: View {
                         .tabItem {
                             Label("Profile", systemImage: "person.circle")
                         }
-                    
-                    UserProfileView()
+                    UserListView()
                         .tabItem {
                             Label("Profile", systemImage: "person.circle")
                         }
+                    
                 }
             } else {
                 LoginView()
