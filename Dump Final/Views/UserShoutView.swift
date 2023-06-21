@@ -52,25 +52,10 @@ struct UserShoutView: View {
                 .padding(.horizontal, 8)
                 .background(item.isRant ? Color.red.opacity(0.2) : Color.green.opacity(0.2))
                 .cornerRadius(8)
-                .swipeActions {
-                    Button("Delete") {
-                        viewModel.delete(id: item.id)
-                    }
-                    .tint(.red)
-                }
+                
             }
             .listStyle(PlainListStyle())
-            .navigationBarTitle("\(viewModel.username)'s Shouts")
-            .toolbar {
-                Button(action: {
-                    viewModel.showingNewItemView = true
-                }) {
-                    Image(systemName: "plus")
-                }
-                .sheet(isPresented: $viewModel.showingNewItemView) {
-                    NewShoutView(newItemPresented: $viewModel.showingNewItemView)
-                }
-            }
+            
         }
         .onAppear {
             viewModel.fetchUser()
