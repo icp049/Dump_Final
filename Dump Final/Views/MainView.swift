@@ -28,7 +28,7 @@ struct MainView: View {
                         }
                     UserListView()
                         .tabItem {
-                            Label("Profile", systemImage: "person.circle")
+                            Label("Stalk", systemImage: "person.circle")
                         }
                     
                 }
