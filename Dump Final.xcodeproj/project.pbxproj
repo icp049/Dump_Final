@@ -68,6 +68,9 @@
 		A632B9262A4180640096E3BC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9252A4180640096E3BC /* ImagePicker.swift */; };
 		A632B92A2A4194BD0096E3BC /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9292A4194BD0096E3BC /* UserListView.swift */; };
 		A632B92C2A41A34C0096E3BC /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B92B2A41A34C0096E3BC /* UserProfileView.swift */; };
+		A632B92E2A42F5AA0096E3BC /* UserProfileViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B92D2A42F5AA0096E3BC /* UserProfileViewViewModel.swift */; };
+		A632B9302A42FCE10096E3BC /* UserShoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B92F2A42FCE10096E3BC /* UserShoutView.swift */; };
+		A632B9322A42FD170096E3BC /* UserShoutViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +127,9 @@
 		A632B9252A4180640096E3BC /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		A632B9292A4194BD0096E3BC /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
 		A632B92B2A41A34C0096E3BC /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		A632B92D2A42F5AA0096E3BC /* UserProfileViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewViewModel.swift; sourceTree = "<group>"; };
+		A632B92F2A42FCE10096E3BC /* UserShoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserShoutView.swift; sourceTree = "<group>"; };
+		A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserShoutViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +279,7 @@
 				A631E5D22A3EC3030099872F /* UploadView.swift */,
 				A632B9292A4194BD0096E3BC /* UserListView.swift */,
 				A632B92B2A41A34C0096E3BC /* UserProfileView.swift */,
+				A632B92F2A42FCE10096E3BC /* UserShoutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -289,6 +296,8 @@
 				A631E5BC2A3EC2ED0099872F /* ShoutItemViewViewModel.swift */,
 				A631E5BD2A3EC2ED0099872F /* ShoutViewViewModel.swift */,
 				A632B9252A4180640096E3BC /* ImagePicker.swift */,
+				A632B92D2A42F5AA0096E3BC /* UserProfileViewViewModel.swift */,
+				A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -464,6 +473,7 @@
 				A632B9262A4180640096E3BC /* ImagePicker.swift in Sources */,
 				A631E5C52A3EC2EE0099872F /* ShoutItemViewViewModel.swift in Sources */,
 				A631E5C32A3EC2EE0099872F /* ScrapBookViewViewModel.swift in Sources */,
+				A632B9302A42FCE10096E3BC /* UserShoutView.swift in Sources */,
 				A631E5C42A3EC2EE0099872F /* NewShoutViewViewModel.swift in Sources */,
 				A631E5B32A3EC29D0099872F /* Shouts.swift in Sources */,
 				A631E5DD2A3EC3030099872F /* UploadView.swift in Sources */,
@@ -474,6 +484,7 @@
 				A631E5D72A3EC3030099872F /* RegisterView.swift in Sources */,
 				A631E5DC2A3EC3030099872F /* RUButton.swift in Sources */,
 				A631E54C2A3EC0890099872F /* Dump_FinalApp.swift in Sources */,
+				A632B92E2A42F5AA0096E3BC /* UserProfileViewViewModel.swift in Sources */,
 				A631E5C82A3EC2EE0099872F /* MainViewViewModel.swift in Sources */,
 				A631E5C92A3EC2EE0099872F /* ProfileViewViewModel.swift in Sources */,
 				A631E5DA2A3EC3030099872F /* MainView.swift in Sources */,
@@ -482,6 +493,7 @@
 				A631E5D82A3EC3030099872F /* ShoutView.swift in Sources */,
 				A631E5D62A3EC3030099872F /* ScrapBookView.swift in Sources */,
 				A631E5D92A3EC3030099872F /* LoginView.swift in Sources */,
+				A632B9322A42FD170096E3BC /* UserShoutViewViewModel.swift in Sources */,
 				A631E5DE2A3EC3030099872F /* NewShoutView.swift in Sources */,
 				A631E5C62A3EC2EE0099872F /* ShoutViewViewModel.swift in Sources */,
 				A631E5C22A3EC2EE0099872F /* RegisterViewViewModel.swift in Sources */,

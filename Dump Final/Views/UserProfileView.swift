@@ -1,8 +1,12 @@
 import SwiftUI
+import FirebaseAuth
+
+
 
 struct UserProfileView: View {
     let appUser: AppUser
     
+    @StateObject private var viewModel = UserProfileViewModel()
     @State private var selectedTab: Tab = .shouts
     
     enum Tab {
@@ -19,11 +23,16 @@ struct UserProfileView: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Name:")
-                    Text("")
+                    Text("Username")
+                    
                 }
                 Button(action: {
-                    // Handle the follow action
+                    if let currentUserId = Auth.auth().currentUser?.uid {
+                        viewModel.followUser(userId: appUser.id, currentUserId: currentUserId)
+                    } else {
+                        // Handle the case where the current user is not available
+                        print("Current user is not available.")
+                    }
                 }) {
                     Text("Follow")
                         .font(.headline)
@@ -31,36 +40,37 @@ struct UserProfileView: View {
                         .padding()
                         .background(Color.blue)
                         .cornerRadius(10)
-                    
                 }
                 .padding(.top, 20)
                 
                 HStack {
-                    Button(action: {
-                        selectedTab = .shouts
-                    }) {
-                        Text("Shouts")
-                            .font(.headline)
-                            .foregroundColor(selectedTab == .shouts ? .blue : .gray)
-                    }
-                    .padding()
-                    
-                    Button(action: {
-                        selectedTab = .photos
-                    }) {
-                        Text("Photos")
-                            .font(.headline)
-                            .foregroundColor(selectedTab == .photos ? .blue : .gray)
-                    }
-                    .padding()
-                }
-                
-                if selectedTab == .shouts {
-                    ShoutsView()
-                } else {
-                    PhotosView()
-                }
-                
+                                Button(action: {
+                                    selectedTab = .shouts
+                                }) {
+                                    Text("Shouts")
+                                        .font(.headline)
+                                        .foregroundColor(selectedTab == .shouts ? .blue : .gray)
+                                }
+                                .padding()
+                                
+                                Button(action: {
+                                    selectedTab = .photos
+                                }) {
+                                    Text("Photos")
+                                        .font(.headline)
+                                        .foregroundColor(selectedTab == .photos ? .blue : .gray)
+                                }
+                                .padding()
+                            }
+                            
+                            Group {
+                                if selectedTab == .shouts {
+                                    UserShoutView(appUser: appUser)
+                                } else {
+                                    PhotosView()
+                                }
+                            }
+                            
                 Spacer()
             }
             .padding()
