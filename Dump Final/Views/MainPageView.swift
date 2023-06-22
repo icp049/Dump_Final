@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 struct MainPageView: View {
     @State private var selectedTab: Tab = .shouts
@@ -31,7 +32,13 @@ struct MainPageView: View {
             }
             
             if selectedTab == .shouts {
-                ShoutsView()
+                if let currentUserId = Auth.auth().currentUser?.uid {
+                    let currentUser = AppUser(id: currentUserId, name: "") // Create AppUser object
+                    MainPageShoutView(appUser: currentUser)
+                } else {
+                    Text("User not authenticated")
+                        .foregroundColor(.red)
+                }
             } else {
                 PhotosView()
             }
