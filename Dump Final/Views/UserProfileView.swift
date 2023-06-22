@@ -23,7 +23,7 @@ struct UserProfileView: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Username")
+                    Text(appUser.name)
                     
                 }
                 Button(action: {
