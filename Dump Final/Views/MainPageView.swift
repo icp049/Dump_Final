@@ -3,7 +3,7 @@ import FirebaseAuth
 
 struct MainPageView: View {
     @State private var selectedTab: Tab = .shouts
-    
+    let appUser: AppUser
     enum Tab {
         case shouts
         case photos
@@ -32,17 +32,15 @@ struct MainPageView: View {
             }
             
             if selectedTab == .shouts {
-                if let currentUserId = Auth.auth().currentUser?.uid {
-                    let currentUser = AppUser(id: currentUserId, name: "") // Create AppUser object
-                    MainPageShoutView(appUser: currentUser)
-                } else {
-                    Text("User not authenticated")
-                        .foregroundColor(.red)
-                }
-            } else {
-                PhotosView()
-            }
-            
+                            if Auth.auth().currentUser != nil {
+                                MainPageShoutView(appUser: appUser)
+                            } else {
+                                Text("User not authenticated")
+                                    .foregroundColor(.red)
+                            }
+                        } else {
+                            PhotosView()
+                        }
             Spacer()
         }
     }
@@ -62,7 +60,8 @@ struct PhotosView: View {
 
 struct MainPageView_Previews: PreviewProvider {
     static var previews: some View {
-        MainPageView()
+        let sampleAppUser = AppUser(id: "1", name: "John Doe") // Example appUser object
+        MainPageView(appUser: sampleAppUser)
     }
 }
 

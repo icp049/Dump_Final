@@ -1,14 +1,13 @@
 import SwiftUI
-import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 struct MainPageShoutView: View {
     let appUser: AppUser
     
-    @FirestoreQuery(collectionPath: "shouts")
+    @FirestoreQuery(collectionPath: "shout")
     var shouts: [Shout]
     
-    @FirestoreQuery(collectionPath: "rants")
+    @FirestoreQuery(collectionPath: "rant")
     var rants: [Rant]
     
     var combinedList: [PostWrapper] {
@@ -51,12 +50,12 @@ struct MainPageShoutView: View {
                 .padding(.horizontal, 8)
                 .background(item.isRant ? Color.red.opacity(0.2) : Color.green.opacity(0.2))
                 .cornerRadius(8)
+                
             }
             .listStyle(PlainListStyle())
         }
         .onAppear {
-            viewModel.fetchShoutsAndRants()
-            
+            viewModel.fetchShoutsAndRantsFromFollowing()
         }
     }
 }
@@ -64,7 +63,7 @@ struct MainPageShoutView: View {
 struct MainPageShoutView_Previews: PreviewProvider {
     static var previews: some View {
         let sampleAppUser = AppUser(id: "1", name: "John Doe") // Example appUser object
-        UserShoutView(appUser: sampleAppUser)
+        MainPageShoutView(appUser: sampleAppUser)
     }
 }
 
