@@ -73,6 +73,7 @@
 		A632B9322A42FD170096E3BC /* UserShoutViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */; };
 		A632B9342A44A1640096E3BC /* MainPageShoutViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9332A44A1640096E3BC /* MainPageShoutViewViewModel.swift */; };
 		A632B9362A44A1750096E3BC /* MainPageShoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9352A44A1750096E3BC /* MainPageShoutView.swift */; };
+		A632B96E2A515A130096E3BC /* Mehs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B96D2A515A130096E3BC /* Mehs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,7 @@
 		A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserShoutViewViewModel.swift; sourceTree = "<group>"; };
 		A632B9332A44A1640096E3BC /* MainPageShoutViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageShoutViewViewModel.swift; sourceTree = "<group>"; };
 		A632B9352A44A1750096E3BC /* MainPageShoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageShoutView.swift; sourceTree = "<group>"; };
+		A632B96D2A515A130096E3BC /* Mehs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mehs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,6 +254,7 @@
 				A631E5B12A3EC29C0099872F /* Rants.swift */,
 				A631E5B02A3EC29C0099872F /* Shouts.swift */,
 				A631E5B22A3EC29D0099872F /* User.swift */,
+				A632B96D2A515A130096E3BC /* Mehs.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				A631E5B32A3EC29D0099872F /* Shouts.swift in Sources */,
 				A631E5DD2A3EC3030099872F /* UploadView.swift in Sources */,
 				A631E5DF2A3EC3030099872F /* ProfileView.swift in Sources */,
+				A632B96E2A515A130096E3BC /* Mehs.swift in Sources */,
 				A631E5B42A3EC29D0099872F /* Rants.swift in Sources */,
 				A631E5B52A3EC29D0099872F /* User.swift in Sources */,
 				A631E5DB2A3EC3030099872F /* MainPageView.swift in Sources */,

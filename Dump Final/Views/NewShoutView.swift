@@ -33,6 +33,12 @@ struct NewShoutView: View {
                     viewModel.saveRant()
                     newItemPresented = false
                 }
+                
+                RUButton(title: "meh", background: .orange)
+                {
+                    viewModel.saveMeh()
+                    newItemPresented = false
+                }
             }
         }
     }

@@ -2,12 +2,14 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewModel = MainViewViewModel()
+    @State private var appUser: AppUser = AppUser(id: "1", name: "John Doe")
+
     
     var body: some View {
         NavigationView {
             if viewModel.isSignedin, !viewModel.currentUserId.isEmpty {
                 TabView {
-                    MainPageView()
+                    MainPageView(appUser: appUser)
                         .tabItem {
                             Label("Home", systemImage: "house")
                         }

@@ -5,6 +5,7 @@ import FirebaseFirestore
 class NewShoutViewViewModel: ObservableObject {
     @Published var shout = ""
     @Published var rant = ""
+    @Published var meh = ""
     @Published var shoutDate = Date()
     @Published var rantDate = Date()
     
@@ -62,6 +63,35 @@ class NewShoutViewViewModel: ObservableObject {
         db.collection("users")
             .document(uId)
             .collection("rant")
+            .document(newId)
+            .setData(newItem.asDictionary())
+    }
+    
+    
+    func saveMeh() {
+        guard canSave else {
+            return
+        }
+        
+        // Get current user id
+        guard let uId = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        // Create model
+        let newId = UUID().uuidString
+        let newItem = Meh(id: newId,
+                            meh: shout,
+                            postDate: Date().timeIntervalSince1970,
+                            postTime: Date().timeIntervalSince1970
+        )
+        
+        // Save model to database
+        let db = Firestore.firestore()
+        
+        db.collection("users")
+            .document(uId)
+            .collection("meh")
             .document(newId)
             .setData(newItem.asDictionary())
     }

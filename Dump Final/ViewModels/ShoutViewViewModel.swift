@@ -52,6 +52,13 @@ class ShoutViewViewModel: ObservableObject {
             .collection("rant")
             .document(id)
             .delete()
+        
+        
+        db.collection("users")
+            .document(userId)
+            .collection("meh")
+            .document(id)
+            .delete()
     }
 }
 
