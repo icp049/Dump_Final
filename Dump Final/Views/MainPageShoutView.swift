@@ -10,6 +10,7 @@ struct MainPageShoutView: View {
     @FirestoreQuery var shouts: [Shout]
     @FirestoreQuery var rants: [Rant]
     @FirestoreQuery var mehs: [Meh]
+
     
     var combinedList: [PostWrapper] {
         let shoutPosts = shouts.map { PostWrapper(id: $0.id, content: $0.shout, postDate: $0.postDate, isRant: false, isMeh: false) }
@@ -25,12 +26,14 @@ struct MainPageShoutView: View {
         self._shouts = FirestoreQuery(collectionPath: "users/\(appUser.id)/shout")
         self._rants = FirestoreQuery(collectionPath: "users/\(appUser.id)/rant")
         self._mehs = FirestoreQuery(collectionPath: "users/\(appUser.id)/meh")
-        self._viewModel = StateObject(wrappedValue: MainPageShoutViewViewModel(userId: appUser.id))
+
+        self.appUser = appUser
+        self.viewModel = MainPageShoutViewViewModel()
     }
     
     var body: some View {
         NavigationView {
-            List(combinedList) { item in
+            List(viewModel.followingPosts) { item in
                 VStack {
                     HStack {
                         Text(item.content)
@@ -68,20 +71,10 @@ struct MainPageShoutView: View {
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("\(viewModel.username)'s Shouts")
-            .toolbar {
-                Button(action: {
-                    viewModel.showingNewItemView = true
-                }) {
-                    Image(systemName: "plus")
-                }
-                .sheet(isPresented: $viewModel.showingNewItemView) {
-                    NewShoutView(newItemPresented: $viewModel.showingNewItemView)
-                }
-            }
+            
         }
         .onAppear {
-            viewModel.fetchUser()
-        }
+            viewModel.fetchFollowingPosts(forUserID: appUser.id)        }
     }
     
    

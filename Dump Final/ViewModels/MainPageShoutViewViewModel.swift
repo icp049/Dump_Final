@@ -1,89 +1,87 @@
-import Foundation
-import FirebaseAuth
+import Combine
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class MainPageShoutViewViewModel: ObservableObject {
-    @Published var showingNewItemView = false
-    @Published var username: String = ""
+    @Published var followingPosts: [PostWrapper] = []
     
-    private let appUser: AppUser
+    private var followingPostsListener: ListenerRegistration?
     private let db = Firestore.firestore()
     
-    @Published var shouts: [Shout] = []
-    @Published var rants: [Rant] = []
-    
-    init(appUser: AppUser) {
-        self.appUser = appUser
-    }
-    
-    func fetchShoutsAndRantsFromFollowing() {
-        db.collection("following").document(appUser.id).getDocument { [weak self] snapshot, error in
-            guard let followingData = snapshot?.data(), error == nil else {
+    func fetchFollowingPosts(forUserID userID: String) {
+        followingPostsListener = db.collection("users").document(userID).collection("following").addSnapshotListener { [weak self] snapshot, error in
+            guard let documents = snapshot?.documents else {
+                print("Error fetching following collection: \(error?.localizedDescription ?? "")")
                 return
             }
             
-            let followingUsers = followingData.compactMap { key, value -> String? in
-                if let isFollowing = value as? Bool, isFollowing {
-                    return key
+            var combinedPosts: [PostWrapper] = []
+            
+            let dispatchGroup = DispatchGroup()
+            
+            for document in documents {
+                dispatchGroup.enter()
+                let followedUserID = document.documentID
+                
+                let shoutPostsQuery = self?.db.collection("users").document(followedUserID).collection("shout")
+                let rantPostsQuery = self?.db.collection("users").document(followedUserID).collection("rant")
+                let mehPostsQuery = self?.db.collection("users").document(followedUserID).collection("meh")
+                
+                let fetchPostsGroup = DispatchGroup()
+                
+                var shoutPosts: [Shout] = []
+                var rantPosts: [Rant] = []
+                var mehPosts: [Meh] = []
+                
+                fetchPostsGroup.enter()
+                shoutPostsQuery?.getDocuments { querySnapshot, error in
+                    if let documents = querySnapshot?.documents {
+                        shoutPosts = documents.compactMap { document in
+                            try? document.data(as: Shout.self)
+                        }
+                    }
+                    fetchPostsGroup.leave()
                 }
-                return nil
+                
+                fetchPostsGroup.enter()
+                rantPostsQuery?.getDocuments { querySnapshot, error in
+                    if let documents = querySnapshot?.documents {
+                        rantPosts = documents.compactMap { document in
+                            try? document.data(as: Rant.self)
+                        }
+                    }
+                    fetchPostsGroup.leave()
+                }
+                
+                fetchPostsGroup.enter()
+                mehPostsQuery?.getDocuments { querySnapshot, error in
+                    if let documents = querySnapshot?.documents {
+                        mehPosts = documents.compactMap { document in
+                            try? document.data(as: Meh.self)
+                        }
+                    }
+                    fetchPostsGroup.leave()
+                }
+                
+                fetchPostsGroup.notify(queue: .main) {
+                    let shoutPostsWrappers = shoutPosts.map { PostWrapper(id: $0.id, content: $0.shout, postDate: $0.postDate, isRant: false, isMeh: false) }
+                    let rantPostsWrappers = rantPosts.map { PostWrapper(id: $0.id, content: $0.rant, postDate: $0.postDate, isRant: true, isMeh: false) }
+                    let mehPostsWrappers = mehPosts.map { PostWrapper(id: $0.id, content: $0.meh, postDate: $0.postDate, isRant: false, isMeh: true) }
+                    
+                    combinedPosts += shoutPostsWrappers + rantPostsWrappers + mehPostsWrappers
+                    
+                    dispatchGroup.leave()
+                }
             }
             
-            self?.fetchShoutsAndRants(for: followingUsers)
+            dispatchGroup.notify(queue: .main) {
+                self?.followingPosts = combinedPosts.sorted { $0.postDate > $1.postDate }
+            }
         }
     }
     
-    private func fetchShoutsAndRants(for userIDs: [String]) {
-        var shouts: [Shout] = []
-        var rants: [Rant] = []
-        let dispatchGroup = DispatchGroup()
-        
-        for userID in userIDs {
-            dispatchGroup.enter()
-            
-            db.collection("shout").whereField("userId", isEqualTo: userID).getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents else {
-                    dispatchGroup.leave()
-                    return
-                }
-                
-                let userShouts = documents.compactMap { document -> Shout? in
-                    return try? document.data(as: Shout.self)
-                }
-                
-                shouts.append(contentsOf: userShouts)
-                dispatchGroup.leave()
-            }
-            
-            dispatchGroup.enter()
-            
-            db.collection("rant").whereField("userId", isEqualTo: userID).getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents else {
-                    dispatchGroup.leave()
-                    return
-                }
-                
-                let userRants = documents.compactMap { document -> Rant? in
-                    return try? document.data(as: Rant.self)
-                }
-                
-                rants.append(contentsOf: userRants)
-                dispatchGroup.leave()
-            }
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.shouts = shouts
-            self.rants = rants
-        }
-    }
-    
-    func formatDate(_ timeInterval: TimeInterval) -> String {
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
+    deinit {
+        followingPostsListener?.remove()
     }
 }
 
