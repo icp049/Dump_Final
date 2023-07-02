@@ -68,16 +68,7 @@ struct UserShoutView: View {
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("\(viewModel.username)'s Shouts")
-            .toolbar {
-                Button(action: {
-                    viewModel.showingNewItemView = true
-                }) {
-                    Image(systemName: "plus")
-                }
-                .sheet(isPresented: $viewModel.showingNewItemView) {
-                    NewShoutView(newItemPresented: $viewModel.showingNewItemView)
-                }
-            }
+            
         }
         .onAppear {
             viewModel.fetchUser()
