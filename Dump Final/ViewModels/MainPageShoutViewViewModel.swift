@@ -6,45 +6,86 @@ import FirebaseFirestore
 class MainPageShoutViewViewModel: ObservableObject {
     @Published var showingNewItemView = false
     @Published var username: String = ""
-    var followingUsers: [AppUser] = []
+    var followingUsers: [MyAppUser] = []
     
-    private let appUser: AppUser
+    private let appUser: MyAppUser
     
-    init(appUser: AppUser) {
+    init(appUser: MyAppUser) {
         self.appUser = appUser
     }
     
-    @Published var user: AppUser? = nil
+    @Published var user: MyAppUser? = nil
     
     func fetchFollowingUsers(for userID: String) {
         let db = Firestore.firestore()
-        db.collection("following").whereField("followerId", isEqualTo: userID).getDocuments { [weak self] snapshot, error in
+        let dispatchGroup = DispatchGroup()
+
+        db.collection("following").whereField("userId", isEqualTo: userID).getDocuments { [weak self] snapshot, error in
             guard let documents = snapshot?.documents, error == nil else {
                 return
             }
-
-            var followingUsers: [AppUser] = []
-
-            let dispatchGroup = DispatchGroup()
+            
+            var followingUsers: [MyAppUser] = []
 
             for document in documents {
                 let data = document.data()
                 let followedUserID = data["userId"] as? String ?? ""
-                
+                var user = MyAppUser(id: followedUserID, name: "")
+
                 dispatchGroup.enter()
-                db.collection("users").document(followedUserID).getDocument { snapshot, error in
+                let shoutsQuery = db.collection("users/\(followedUserID)/shout")
+                let rantsQuery = db.collection("users/\(followedUserID)/rant")
+                let mehsQuery = db.collection("users/\(followedUserID)/meh")
+
+                // Fetch shouts
+                dispatchGroup.enter()
+                shoutsQuery.getDocuments { [weak self] snapshot, error in
                     defer {
                         dispatchGroup.leave()
                     }
                     
-                    guard let data = snapshot?.data(), error == nil else {
+                    guard let documents = snapshot?.documents, error == nil else {
                         return
                     }
                     
-                    let user = AppUser(id: data["id"] as? String ?? "",
-                                       name: data["name"] as? String ?? "")
-                    followingUsers.append(user)
+                    user.shouts = documents.compactMap { document in
+                        try? document.data(as: Shout.self)
+                    }
                 }
+                
+                // Fetch rants
+                dispatchGroup.enter()
+                rantsQuery.getDocuments { [weak self] snapshot, error in
+                    defer {
+                        dispatchGroup.leave()
+                    }
+                    
+                    guard let documents = snapshot?.documents, error == nil else {
+                        return
+                    }
+                    
+                    user.rants = documents.compactMap { document in
+                        try? document.data(as: Rant.self)
+                    }
+                }
+                
+                // Fetch mehs
+                dispatchGroup.enter()
+                mehsQuery.getDocuments { [weak self] snapshot, error in
+                    defer {
+                        dispatchGroup.leave()
+                    }
+                    
+                    guard let documents = snapshot?.documents, error == nil else {
+                        return
+                    }
+                    
+                    user.mehs = documents.compactMap { document in
+                        try? document.data(as: Meh.self)
+                    }
+                }
+                
+                followingUsers.append(user)
             }
             
             dispatchGroup.notify(queue: .main) {
@@ -52,6 +93,9 @@ class MainPageShoutViewViewModel: ObservableObject {
             }
         }
     }
+
+
+
 
 
     

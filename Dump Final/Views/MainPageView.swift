@@ -32,16 +32,15 @@ struct MainPageView: View {
             }
             
             if selectedTab == .shouts {
-                            if Auth.auth().currentUser != nil {
-                               ShoutsView()
-                            } else {
-                                Text("User not authenticated")
-                                    .foregroundColor(.red)
-                            }
-                        } else {
-                            PhotosView()
-                        }
-            Spacer()
+                if Auth.auth().currentUser != nil {
+                    MainPageShoutView(appUser: MyAppUser(id: "1", name: "John Doe"))
+                } else {
+                    Text("User not authenticated")
+                        .foregroundColor(.red)
+                }
+            } else {
+                PhotosView()
+            }
         }
     }
 }

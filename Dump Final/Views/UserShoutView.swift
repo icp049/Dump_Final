@@ -67,7 +67,7 @@ struct UserShoutView: View {
                 }
             }
             .listStyle(PlainListStyle())
-            .navigationBarTitle("\(viewModel.username)'s Shouts")
+            
             
         }
         .onAppear {
