@@ -3,23 +3,27 @@ import FirebaseAuth
 
 struct UserProfileView: View {
     let appUser: AppUser
-    
+
     @StateObject private var viewModel = UserProfileViewModel()
     @State private var selectedTab: Tab = .shouts
     @State private var isFollowing: Bool = false
-    
+
     enum Tab {
         case shouts
         case photos
     }
-    
+
+    init(appUser: AppUser) {
+        self.appUser = appUser
+    }
+
     var body: some View {
         VStack {
             Circle()
                 .foregroundColor(Color.blue)
                 .frame(width: 125, height: 125)
                 .padding(.top, 20)
-            
+
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Text(appUser.name)
@@ -28,10 +32,12 @@ struct UserProfileView: View {
                     if let currentUserId = Auth.auth().currentUser?.uid {
                         if isFollowing {
                             viewModel.unfollowUser(userId: appUser.id, currentUserId: currentUserId)
+                            isFollowing = false
                         } else {
                             viewModel.followUser(userId: appUser.id, currentUserId: currentUserId)
+                            isFollowing = true
                         }
-                        isFollowing.toggle()
+                        UserDefaults.standard.set(isFollowing, forKey: appUser.id) // Update follow status in UserDefaults
                     } else {
                         // Handle the case where the current user is not available
                         print("Current user is not available.")
@@ -45,7 +51,7 @@ struct UserProfileView: View {
                         .cornerRadius(10)
                 }
                 .padding(.top, 20)
-                
+
                 HStack {
                     Button(action: {
                         selectedTab = .shouts
@@ -55,7 +61,7 @@ struct UserProfileView: View {
                             .foregroundColor(selectedTab == .shouts ? .blue : .gray)
                     }
                     .padding()
-                    
+
                     Button(action: {
                         selectedTab = .photos
                     }) {
@@ -65,7 +71,7 @@ struct UserProfileView: View {
                     }
                     .padding()
                 }
-                
+
                 Group {
                     if selectedTab == .shouts {
                         UserShoutView(appUser: appUser)
@@ -73,10 +79,13 @@ struct UserProfileView: View {
                         PhotosView()
                     }
                 }
-                
+
                 Spacer()
             }
             .padding()
+        }
+        .onAppear {
+            isFollowing = UserDefaults.standard.bool(forKey: appUser.id) // Fetch follow status from UserDefaults
         }
     }
 }
