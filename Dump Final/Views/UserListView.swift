@@ -4,8 +4,34 @@ import Firebase
 struct AppUser: Identifiable {
     let id: String
     let name: String
-    // Add other properties you want to display
+    var shouts: [Shout] = []
+    var rants: [Rant] = []
+    var mehs: [Meh] = []
+    
+    init(id: String, name: String, shouts: [Shout] = [], rants: [Rant] = [], mehs: [Meh] = []) {
+        self.id = id
+        self.name = name
+        self.shouts = shouts
+        self.rants = rants
+        self.mehs = mehs
+    }
+    
+    init?(data: [String: Any]) {
+        guard let id = data["id"] as? String,
+              let name = data["name"] as? String else {
+            return nil
+        }
+
+        self.id = id
+        self.name = name
+        self.shouts = data["shouts"] as? [Shout] ?? []
+        self.rants = data["rants"] as? [Rant] ?? []
+        self.mehs = data["mehs"] as? [Meh] ?? []
+    }
+
 }
+
+
 
 class UserViewModel: ObservableObject {
     @Published var appUsers: [AppUser] = []

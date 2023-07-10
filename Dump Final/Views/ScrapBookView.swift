@@ -27,8 +27,10 @@ struct ScrapBookView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    RUButton(title: "Upload", background: .green) {
+                    Button(action: {
                         isShowingNewShoutView = true
+                    }) {
+                        Text("Upload")
                     }
                 }
             }
@@ -37,6 +39,7 @@ struct ScrapBookView: View {
             }
         }
     }
+    
     private func gridLayout(_ size: CGSize) -> [GridItem] {
         let columns: Int = {
             if size.width < 400 {
@@ -51,4 +54,3 @@ struct ScrapBookView: View {
         return Array(repeating: .init(.flexible()), count: columns)
     }
 }
-

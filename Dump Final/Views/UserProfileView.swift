@@ -1,13 +1,12 @@
 import SwiftUI
 import FirebaseAuth
 
-
-
 struct UserProfileView: View {
     let appUser: AppUser
     
     @StateObject private var viewModel = UserProfileViewModel()
     @State private var selectedTab: Tab = .shouts
+    @State private var isFollowing: Bool = false
     
     enum Tab {
         case shouts
@@ -24,53 +23,57 @@ struct UserProfileView: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Text(appUser.name)
-                    
                 }
                 Button(action: {
                     if let currentUserId = Auth.auth().currentUser?.uid {
-                        viewModel.followUser(userId: appUser.id, currentUserId: currentUserId)
+                        if isFollowing {
+                            viewModel.unfollowUser(userId: appUser.id, currentUserId: currentUserId)
+                        } else {
+                            viewModel.followUser(userId: appUser.id, currentUserId: currentUserId)
+                        }
+                        isFollowing.toggle()
                     } else {
                         // Handle the case where the current user is not available
                         print("Current user is not available.")
                     }
                 }) {
-                    Text("Follow")
+                    Text(isFollowing ? "Following" : "Follow")
                         .font(.headline)
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color.blue)
+                        .background(isFollowing ? Color.blue : Color.gray)
                         .cornerRadius(10)
                 }
                 .padding(.top, 20)
                 
                 HStack {
-                                Button(action: {
-                                    selectedTab = .shouts
-                                }) {
-                                    Text("Shouts")
-                                        .font(.headline)
-                                        .foregroundColor(selectedTab == .shouts ? .blue : .gray)
-                                }
-                                .padding()
-                                
-                                Button(action: {
-                                    selectedTab = .photos
-                                }) {
-                                    Text("Photos")
-                                        .font(.headline)
-                                        .foregroundColor(selectedTab == .photos ? .blue : .gray)
-                                }
-                                .padding()
-                            }
-                            
-                            Group {
-                                if selectedTab == .shouts {
-                                    UserShoutView(appUser: appUser)
-                                } else {
-                                    PhotosView()
-                                }
-                            }
-                            
+                    Button(action: {
+                        selectedTab = .shouts
+                    }) {
+                        Text("Shouts")
+                            .font(.headline)
+                            .foregroundColor(selectedTab == .shouts ? .blue : .gray)
+                    }
+                    .padding()
+                    
+                    Button(action: {
+                        selectedTab = .photos
+                    }) {
+                        Text("Photos")
+                            .font(.headline)
+                            .foregroundColor(selectedTab == .photos ? .blue : .gray)
+                    }
+                    .padding()
+                }
+                
+                Group {
+                    if selectedTab == .shouts {
+                        UserShoutView(appUser: appUser)
+                    } else {
+                        PhotosView()
+                    }
+                }
+                
                 Spacer()
             }
             .padding()

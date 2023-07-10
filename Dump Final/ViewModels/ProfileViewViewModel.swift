@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
 
 
 class ProfileViewViewModel: ObservableObject{
@@ -38,6 +39,13 @@ class ProfileViewViewModel: ObservableObject{
     }
     
 }
+    
+    
+    
+    
+    
+    
+   
     
     
     
