@@ -15,7 +15,7 @@ class ProfileViewViewModel: ObservableObject{
     
     init() {}
     
-    
+    @Published var showingNewItemView = false
     @Published var user: User? = nil
     
     func fetchUser(){

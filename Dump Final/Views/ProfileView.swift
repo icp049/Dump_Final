@@ -81,6 +81,7 @@ struct ProfileView: View {
                     Text("Loading Profile")
                 }
                 Button {
+                    viewModel.showingNewItemView = true;
                     
                 } label: {
                     ZStack {
@@ -93,7 +94,7 @@ struct ProfileView: View {
                             .bold()
                     }
                 }
-                .sheet(isPresented: $viewmodel.showingNewItemView) {
+                .sheet(isPresented: $viewModel.showingNewItemView) {
                     EditProfileView(newItemPresented: $viewModel.showingNewItemView)
                 }
             }
