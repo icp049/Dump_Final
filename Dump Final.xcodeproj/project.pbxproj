@@ -74,6 +74,8 @@
 		A632B9342A44A1640096E3BC /* MainPageShoutViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9332A44A1640096E3BC /* MainPageShoutViewViewModel.swift */; };
 		A632B9362A44A1750096E3BC /* MainPageShoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B9352A44A1750096E3BC /* MainPageShoutView.swift */; };
 		A632B96E2A515A130096E3BC /* Mehs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B96D2A515A130096E3BC /* Mehs.swift */; };
+		A6F5AC0D2A64A4F500AB427C /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5AC0C2A64A4F500AB427C /* EditProfileView.swift */; };
+		A6F5AC0F2A64A52600AB427C /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5AC0E2A64A52600AB427C /* EditProfileController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +138,8 @@
 		A632B9332A44A1640096E3BC /* MainPageShoutViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageShoutViewViewModel.swift; sourceTree = "<group>"; };
 		A632B9352A44A1750096E3BC /* MainPageShoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageShoutView.swift; sourceTree = "<group>"; };
 		A632B96D2A515A130096E3BC /* Mehs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mehs.swift; sourceTree = "<group>"; };
+		A6F5AC0C2A64A4F500AB427C /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		A6F5AC0E2A64A52600AB427C /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +292,7 @@
 				A632B92B2A41A34C0096E3BC /* UserProfileView.swift */,
 				A632B92F2A42FCE10096E3BC /* UserShoutView.swift */,
 				A632B9352A44A1750096E3BC /* MainPageShoutView.swift */,
+				A6F5AC0C2A64A4F500AB427C /* EditProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -307,6 +312,7 @@
 				A632B92D2A42F5AA0096E3BC /* UserProfileViewViewModel.swift */,
 				A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */,
 				A632B9332A44A1640096E3BC /* MainPageShoutViewViewModel.swift */,
+				A6F5AC0E2A64A52600AB427C /* EditProfileController.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -492,8 +498,10 @@
 				A631E5B42A3EC29D0099872F /* Rants.swift in Sources */,
 				A631E5B52A3EC29D0099872F /* User.swift in Sources */,
 				A631E5DB2A3EC3030099872F /* MainPageView.swift in Sources */,
+				A6F5AC0F2A64A52600AB427C /* EditProfileController.swift in Sources */,
 				A631E5D72A3EC3030099872F /* RegisterView.swift in Sources */,
 				A631E5DC2A3EC3030099872F /* RUButton.swift in Sources */,
+				A6F5AC0D2A64A4F500AB427C /* EditProfileView.swift in Sources */,
 				A632B9342A44A1640096E3BC /* MainPageShoutViewViewModel.swift in Sources */,
 				A631E54C2A3EC0890099872F /* Dump_FinalApp.swift in Sources */,
 				A632B92E2A42F5AA0096E3BC /* UserProfileViewViewModel.swift in Sources */,

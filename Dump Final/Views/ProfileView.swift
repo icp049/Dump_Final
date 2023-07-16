@@ -80,6 +80,22 @@ struct ProfileView: View {
                 } else {
                     Text("Loading Profile")
                 }
+                Button {
+                    
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .padding(.top, 20)
+                            .foregroundColor(Color.orange)
+                        
+                        Text("Edit Profile")
+                            .foregroundColor(Color.white)
+                            .bold()
+                    }
+                }
+                .sheet(isPresented: $viewmodel.showingNewItemView) {
+                    EditProfileView(newItemPresented: $viewModel.showingNewItemView)
+                }
             }
             .navigationTitle("My Profile")
         }
@@ -95,3 +111,5 @@ struct ProfileView_Previews: PreviewProvider {
     }
 }
 
+
+   
