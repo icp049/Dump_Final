@@ -62,14 +62,19 @@ struct EditProfileView: View {
             }
             
             
-            // add textfields here for username and name change 
+            // add textfields here for username and name change
+            TextField("Name", text: $viewModel.name)
+                           .padding()
+            TextField("Username", text: $viewModel.username)
+                           .padding()
+        
             
            
             
             
             RUButton(title: "Save Changes", background: .green)
             {
-                
+                viewModel.saveChanges()
                 newItemPresented = false
             }
         }
