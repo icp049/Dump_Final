@@ -27,6 +27,10 @@ struct ProfileView: View {
                             Text(user.name)
                         }
                         HStack {
+                            Text("Username")
+                            Text(user.username)
+                        }
+                        HStack {
                             Text("Email")
                             Text(user.email)
                         }
