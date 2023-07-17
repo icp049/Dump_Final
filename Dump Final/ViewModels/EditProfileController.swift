@@ -1,10 +1,3 @@
-//
-//  EditProfileController.swift
-//  Dump Final
-//
-//  Created by Ian Pedeglorio on 2023-07-16.
-//
-
 import Foundation
 import FirebaseAuth
 import FirebaseStorage
@@ -13,17 +6,15 @@ import FirebaseFirestore
 
 class EditProfileController: ObservableObject {
     @Published var showingNewItemView = false
-    @Published var selectedImage: UIImage? // Removed @State since it's not allowed in ObservableObject
+    @Published var selectedImage: UIImage?
     @Published var name = ""
     @Published var username = ""
 
     func changeName(newName: String) {
-        // Perform any additional validation if required
         self.name = newName
     }
 
     func changeUsername(newUsername: String) {
-        // Perform any additional validation if required
         self.username = newUsername
     }
 
@@ -36,7 +27,17 @@ class EditProfileController: ObservableObject {
             return
         }
 
-        // Perform your update logic here, let's assume you have the userId for the current user
+        // Check if a new profile image has been selected
+        if let image = selectedImage {
+            UploadProfilePhoto(image: image) { [weak self] imageURL in
+                self?.updateUserDataWithImageURL(imageURL: imageURL)
+            }
+        } else {
+            updateUserDataWithImageURL(imageURL: nil)
+        }
+    }
+
+    private func updateUserDataWithImageURL(imageURL: String?) {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("No user currently logged in.")
             return
@@ -45,10 +46,16 @@ class EditProfileController: ObservableObject {
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(userId)
 
-        userRef.updateData([
+        var userData: [String: Any] = [
             "name": name,
             "username": username
-        ]) { error in
+        ]
+
+        if let imageURL = imageURL {
+            userData["imageURL"] = imageURL
+        }
+
+        userRef.updateData(userData) { error in
             if let error = error {
                 print("Error updating user: \(error)")
             } else {
@@ -66,10 +73,9 @@ class EditProfileController: ObservableObject {
     }
 }
 
-// Helper functions for updating profile photo and image URL
-
-func UploadProfilePhoto(image: UIImage, completion: @escaping () -> Void) {
+func UploadProfilePhoto(image: UIImage, completion: @escaping (String?) -> Void) {
     guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+        completion(nil)
         return
     }
 
@@ -77,10 +83,11 @@ func UploadProfilePhoto(image: UIImage, completion: @escaping () -> Void) {
 
     guard let currentUser = Auth.auth().currentUser else {
         print("No user currently logged in.")
+        completion(nil)
         return
     }
 
-    let folderRef = storageRef.child("users/\(currentUser.uid)/images")
+    let folderRef = storageRef.child("users/\(currentUser.uid)/profilePhoto")
 
     let fileName = "\(UUID().uuidString).jpg"
     let fileRef = folderRef.child(fileName)
@@ -88,21 +95,22 @@ func UploadProfilePhoto(image: UIImage, completion: @escaping () -> Void) {
     let uploadTask = fileRef.putData(imageData, metadata: nil) { metadata, error in
         if let error = error {
             print("Error uploading image: \(error)")
+            completion(nil)
             return
         }
 
         fileRef.downloadURL { url, error in
             if let imageURL = url?.absoluteString {
-                updateUserImageURL(imageURL) {
-                    completion()
-                }
+                completion(imageURL)
+            } else {
+                completion(nil)
             }
         }
     }
 
     let db = Firestore.firestore()
     let userRef = db.collection("users").document(currentUser.uid)
-    let imageDocumentRef = userRef.collection("images").document() // Create a new document inside the "images" collection
+    let imageDocumentRef = userRef.collection("profilephoto").document()
 
     uploadTask.observe(.success) { snapshot in
         imageDocumentRef.setData(["url": fileName, "createdAt": FieldValue.serverTimestamp()]) { error in
@@ -112,31 +120,8 @@ func UploadProfilePhoto(image: UIImage, completion: @escaping () -> Void) {
                 print("Image URL added to user's images collection successfully")
             }
 
-            completion()
+            completion(fileName)
         }
-    }
-}
-
-func updateUserPhotoURL(_ imageURL: String, completion: @escaping () -> Void) {
-    let db = Firestore.firestore()
-
-    guard let currentUser = Auth.auth().currentUser else {
-        print("No user currently logged in.")
-        return
-    }
-
-    let userRef = db.collection("users").document(currentUser.uid)
-
-    userRef.updateData([
-        "imageURL": imageURL
-    ]) { error in
-        if let error = error {
-            print("Error updating user image URL: \(error)")
-        } else {
-            print("User image URL updated successfully")
-        }
-
-        completion()
     }
 }
 
