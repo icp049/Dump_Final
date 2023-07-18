@@ -3,8 +3,6 @@ import SwiftUI
 struct ScrapBookView: View {
     @StateObject private var viewModel = ScrapBookViewViewModel()
     @State private var isShowingNewShoutView = false
-    @State private var isShowingPhotoView = false
-    @State private var selectedImage: UIImage?
     
     var body: some View {
         NavigationView {
@@ -19,9 +17,6 @@ struct ScrapBookView: View {
                                     .frame(width: geometry.size.width / 3 - 1, height: geometry.size.width / 3 - 1)
                                     .clipped()
                                     .cornerRadius(4)
-                                    .onTapGesture {
-                                        isShowingPhotoView = true
-                                    }
                             }
                         }
                     }
@@ -41,12 +36,6 @@ struct ScrapBookView: View {
             }
             .sheet(isPresented: $isShowingNewShoutView) {
                 UploadView(newItemPresented: $isShowingNewShoutView)
-            }
-            .fullScreenCover(isPresented: $isShowingPhotoView) {
-                if let selectedImage = selectedImage {
-                    PhotoView(image: selectedImage)
-                        .edgesIgnoringSafeArea(.all)
-                }
             }
         }
     }
