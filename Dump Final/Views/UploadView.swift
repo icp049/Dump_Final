@@ -15,6 +15,8 @@ struct UploadView: View {
         selectedImage != nil
     }
     
+    
+    
     var body: some View {
         NavigationView {
             VStack {

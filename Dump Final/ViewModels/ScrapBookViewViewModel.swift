@@ -7,10 +7,14 @@ import Combine
 
 class ScrapBookViewViewModel: ObservableObject {
     @Published var showingNewItemView = false
-    @Published var retrievedImagePaths: [String] = []
     @Published var retrievedImages: [UIImage] = []
 
-    private var cancellables = Set<AnyCancellable>()
+    struct ImageWithTimestamp {
+        let image: UIImage
+        let timestamp: String
+    }
+
+    @Published var retrievedImageTimestamps: [ImageWithTimestamp] = []
 
     init() {
         retrievePhotos()
@@ -28,7 +32,7 @@ class ScrapBookViewViewModel: ObservableObject {
 
         userRef.collection("images")
             .order(by: "createdAt", descending: true)
-            .addSnapshotListener { [weak self] snapshot, error in
+            .getDocuments { [weak self] snapshot, error in
                 guard let self = self else { return }
 
                 if let error = error {
@@ -41,49 +45,51 @@ class ScrapBookViewViewModel: ObservableObject {
                     return
                 }
 
-                var uniquePaths = Set<String>() // Track unique image paths
-                var retrievedImages = [UIImage]() // Temporarily store retrieved images
+                let dispatchGroup = DispatchGroup()
+                var retrievedImages = [UIImage]()
+                var retrievedImageTimestamps = [ImageWithTimestamp]()
 
                 for doc in documents {
                     if let fileName = doc["url"] as? String {
                         let imagePath = "users/\(userID)/images/\(fileName)"
 
-                        if uniquePaths.contains(imagePath) {
-                            continue // Skip duplicate image paths
-                        }
-                        uniquePaths.insert(imagePath)
-
                         let fileRef = storageRef.child(imagePath)
 
+                        dispatchGroup.enter()
                         fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                             if let error = error {
                                 print("Error retrieving photo data: \(error)")
+                                dispatchGroup.leave()
                                 return
                             }
 
                             if let data = data, let image = UIImage(data: data) {
-                                retrievedImages.append(image) // Store retrieved image
-                            }
+                                retrievedImages.append(image)
 
-                            // Check if all images have been retrieved
-                            if retrievedImages.count == uniquePaths.count {
-                                DispatchQueue.main.async {
-                                    // Sort the retrieved images by createdAt field in descending order
-                                    let sortedImages = retrievedImages.sorted { (image1, image2) -> Bool in
-                                        guard let timestamp1 = (doc["createdAt"] as? Timestamp)?.dateValue(),
-                                              let timestamp2 = (doc["createdAt"] as? Timestamp)?.dateValue()
-                                        else {
-                                            return false
-                                        }
+                                if let createdAt = doc["createdAt"] as? Timestamp {
+                                    let formatter = DateFormatter()
+                                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                                    let timestampString = formatter.string(from: createdAt.dateValue())
 
-                                        return timestamp1 > timestamp2
-                                    }
-
-                                    self.retrievedImages = sortedImages // Update published property
+                                    let imageWithTimestamp = ImageWithTimestamp(image: image, timestamp: timestampString)
+                                    retrievedImageTimestamps.append(imageWithTimestamp)
                                 }
                             }
+
+                            dispatchGroup.leave()
                         }
                     }
+                }
+
+                dispatchGroup.notify(queue: .main) {
+                    self.retrievedImageTimestamps = retrievedImageTimestamps
+
+                    // Sort the retrieved images by createdAt field in descending order
+                    let sortedImages = retrievedImageTimestamps
+                        .sorted { $0.timestamp > $1.timestamp }
+                        .map { $0.image }
+
+                    self.retrievedImages = sortedImages
                 }
             }
     }

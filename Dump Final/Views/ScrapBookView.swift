@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ScrapBookView: View {
-    @StateObject private var viewModel = ScrapBookViewViewModel()
+    @ObservedObject private var viewModel = ScrapBookViewViewModel()
     @State private var isShowingNewShoutView = false
     
     var body: some View {
@@ -10,7 +10,7 @@ struct ScrapBookView: View {
                 VStack {
                     ScrollView {
                         LazyVGrid(columns: gridLayout(geometry.size), spacing: 2) {
-                            ForEach(viewModel.retrievedImages.reversed(), id: \.self) { image in
+                            ForEach(viewModel.retrievedImages, id: \.self) { image in
                                 Image(uiImage: image)
                                     .resizable()
                                     .scaledToFill()
@@ -36,8 +36,10 @@ struct ScrapBookView: View {
             }
             .sheet(isPresented: $isShowingNewShoutView) {
                 UploadView(newItemPresented: $isShowingNewShoutView)
+                
             }
         }
+       
     }
     
     private func gridLayout(_ size: CGSize) -> [GridItem] {
