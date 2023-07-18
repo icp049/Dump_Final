@@ -76,6 +76,8 @@
 		A632B96E2A515A130096E3BC /* Mehs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632B96D2A515A130096E3BC /* Mehs.swift */; };
 		A6F5AC0D2A64A4F500AB427C /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5AC0C2A64A4F500AB427C /* EditProfileView.swift */; };
 		A6F5AC0F2A64A52600AB427C /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5AC0E2A64A52600AB427C /* EditProfileController.swift */; };
+		A6F5AC112A666FF500AB427C /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5AC102A666FF500AB427C /* PhotoView.swift */; };
+		A6F5AC132A66703400AB427C /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5AC122A66703400AB427C /* PhotoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +142,8 @@
 		A632B96D2A515A130096E3BC /* Mehs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mehs.swift; sourceTree = "<group>"; };
 		A6F5AC0C2A64A4F500AB427C /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		A6F5AC0E2A64A52600AB427C /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
+		A6F5AC102A666FF500AB427C /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		A6F5AC122A66703400AB427C /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,6 +297,7 @@
 				A632B92F2A42FCE10096E3BC /* UserShoutView.swift */,
 				A632B9352A44A1750096E3BC /* MainPageShoutView.swift */,
 				A6F5AC0C2A64A4F500AB427C /* EditProfileView.swift */,
+				A6F5AC102A666FF500AB427C /* PhotoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 				A632B9312A42FD170096E3BC /* UserShoutViewViewModel.swift */,
 				A632B9332A44A1640096E3BC /* MainPageShoutViewViewModel.swift */,
 				A6F5AC0E2A64A52600AB427C /* EditProfileController.swift */,
+				A6F5AC122A66703400AB427C /* PhotoViewController.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -484,6 +490,7 @@
 			files = (
 				A631E5B72A3EC2D70099872F /* Extensions.swift in Sources */,
 				A632B92C2A41A34C0096E3BC /* UserProfileView.swift in Sources */,
+				A6F5AC112A666FF500AB427C /* PhotoView.swift in Sources */,
 				A632B9362A44A1750096E3BC /* MainPageShoutView.swift in Sources */,
 				A631E5C12A3EC2EE0099872F /* LoginViewViewModel.swift in Sources */,
 				A632B9262A4180640096E3BC /* ImagePicker.swift in Sources */,
@@ -491,6 +498,7 @@
 				A631E5C32A3EC2EE0099872F /* ScrapBookViewViewModel.swift in Sources */,
 				A632B9302A42FCE10096E3BC /* UserShoutView.swift in Sources */,
 				A631E5C42A3EC2EE0099872F /* NewShoutViewViewModel.swift in Sources */,
+				A6F5AC132A66703400AB427C /* PhotoViewController.swift in Sources */,
 				A631E5B32A3EC29D0099872F /* Shouts.swift in Sources */,
 				A631E5DD2A3EC3030099872F /* UploadView.swift in Sources */,
 				A631E5DF2A3EC3030099872F /* ProfileView.swift in Sources */,
