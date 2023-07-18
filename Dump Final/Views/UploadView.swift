@@ -43,7 +43,7 @@ struct UploadView: View {
                 Button(action: {
                     if isImageSelected, let selectedImage = selectedImage {
                         isPosting = true
-                        UploadPhoto(image: selectedImage) {
+                        UploadPhoto(image: selectedImage, caption: caption) { // Pass the caption here
                             newItemPresented = false
                             isPosting = false
                         }
@@ -56,6 +56,7 @@ struct UploadView: View {
                         .cornerRadius(10)
                 }
                 .disabled(isPosting)
+
             }
             .padding()
             .navigationBarTitle("Upload")
@@ -98,7 +99,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-func UploadPhoto(image: UIImage, completion: @escaping () -> Void) {
+func UploadPhoto(image: UIImage, caption: String, completion: @escaping () -> Void) {
     guard let imageData = image.jpegData(compressionQuality: 0.8) else {
         return
     }
@@ -135,13 +136,13 @@ func UploadPhoto(image: UIImage, completion: @escaping () -> Void) {
     let imageDocumentRef = userRef.collection("images").document() // Create a new document inside the "images" collection
     
     uploadTask.observe(.success) { snapshot in
-        imageDocumentRef.setData(["url": fileName, "createdAt": FieldValue.serverTimestamp()]){ error in
+        imageDocumentRef.setData(["url": fileName, "caption": caption, "createdAt": FieldValue.serverTimestamp()]) { error in
             if let error = error {
-                print("Error adding image URL to user's images collection: \(error)")
+                print("Error adding image URL and caption to user's images collection: \(error)")
             } else {
-                print("Image URL added to user's images collection successfully")
+                print("Image URL and caption added to user's images collection successfully")
             }
-            
+
             completion()
         }
     }
