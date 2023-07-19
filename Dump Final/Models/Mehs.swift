@@ -11,10 +11,11 @@ import Foundation
 
 struct Mehs: Codable, Identifiable {
     let id: String
-    let shout: String
+    let meh: String
     let postDate: TimeInterval
     let postTime: TimeInterval
     let postedBy: String
+    
 
     
     

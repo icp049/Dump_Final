@@ -6,6 +6,7 @@ struct Shout: Codable, Identifiable {
     let shout: String
     let postDate: TimeInterval
     let postTime: TimeInterval
+   
 }
 
 struct Rant: Codable, Identifiable {
@@ -13,6 +14,7 @@ struct Rant: Codable, Identifiable {
     let rant: String
     let postDate: TimeInterval
     let postTime: TimeInterval
+
 }
 
 struct Meh: Codable, Identifiable {
@@ -20,6 +22,7 @@ struct Meh: Codable, Identifiable {
     let meh: String
     let postDate: TimeInterval
     let postTime: TimeInterval
+
 }
 
 struct PostWrapper: Identifiable {

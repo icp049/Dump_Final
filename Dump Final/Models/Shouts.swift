@@ -14,6 +14,8 @@ struct Shouts: Codable, Identifiable {
     let shout: String
     let postDate: TimeInterval
     let postTime: TimeInterval
+    let postedBy: String
+ 
 
     
     

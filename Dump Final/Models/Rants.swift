@@ -17,6 +17,8 @@ struct Rants: Codable, Identifiable {
     let rant: String
     let postDate: TimeInterval
     let postTime: TimeInterval
+    let postedBy: String
+  
  
     
 }

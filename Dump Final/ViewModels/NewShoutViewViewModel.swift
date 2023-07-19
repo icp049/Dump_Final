@@ -8,8 +8,30 @@ class NewShoutViewViewModel: ObservableObject {
     @Published var meh = ""
     @Published var shoutDate = Date()
     @Published var rantDate = Date()
+    var username = "" // Add a property to store the username
     
-    init() {}
+    init() {
+        
+        fetchUsername()
+    }
+    
+    private func fetchUsername() {
+            guard let uId = Auth.auth().currentUser?.uid else {
+                return
+            }
+            
+            let db = Firestore.firestore()
+            db.collection("users").document(uId).getDocument { snapshot, error in
+                if let error = error {
+                    print("Error getting user document: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let data = snapshot?.data(), let username = data["username"] as? String {
+                    self.username = username
+                }
+            }
+        }
     
     func saveShout() {
         guard canSave else {
@@ -26,7 +48,9 @@ class NewShoutViewViewModel: ObservableObject {
         let newItem = Shouts(id: newId,
                              shout: shout,
                              postDate: Date().timeIntervalSince1970,
-                             postTime: Date().timeIntervalSince1970
+                             postTime: Date().timeIntervalSince1970,
+                             postedBy: username
+                            
         )
         
         // Save model to database
@@ -54,7 +78,9 @@ class NewShoutViewViewModel: ObservableObject {
         let newItem = Rants(id: newId,
                             rant: shout,
                             postDate: Date().timeIntervalSince1970,
-                            postTime: Date().timeIntervalSince1970
+                            postTime: Date().timeIntervalSince1970,
+                            postedBy: username
+                        
         )
         
         // Save model to database
@@ -80,10 +106,13 @@ class NewShoutViewViewModel: ObservableObject {
         
         // Create model
         let newId = UUID().uuidString
-        let newItem = Meh(id: newId,
+        let newItem = Mehs(id: newId,
                             meh: shout,
                             postDate: Date().timeIntervalSince1970,
-                            postTime: Date().timeIntervalSince1970
+                            postTime: Date().timeIntervalSince1970,
+                            postedBy: username
+                          
+                           
         )
         
         // Save model to database
