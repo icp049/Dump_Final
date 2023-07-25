@@ -51,10 +51,6 @@ class EditProfileController: ObservableObject {
             "username": username
         ]
 
-        if let imageURL = imageURL {
-            userData["imageURL"] = imageURL
-        }
-
         userRef.updateData(userData) { error in
             if let error = error {
                 print("Error updating user: \(error)")
@@ -88,6 +84,8 @@ func UploadProfilePhoto(image: UIImage, completion: @escaping (String?) -> Void)
     }
 
     let folderRef = storageRef.child("users/\(currentUser.uid)/profilePhoto")
+    
+    
 
     let fileName = "\(UUID().uuidString).jpg"
     let fileRef = folderRef.child(fileName)
@@ -115,13 +113,41 @@ func UploadProfilePhoto(image: UIImage, completion: @escaping (String?) -> Void)
     uploadTask.observe(.success) { snapshot in
         imageDocumentRef.setData(["url": fileName, "createdAt": FieldValue.serverTimestamp()]) { error in
             if let error = error {
-                print("Error adding image URL to user's images collection: \(error)")
+                print("Error adding image URL and caption to user's images collection: \(error)")
             } else {
-                print("Image URL added to user's images collection successfully")
+                print("Image URL and caption added to user's images collection successfully")
             }
 
             completion(fileName)
         }
+        }
+    }
+
+
+func UpdateProfilePhotoURL(_ imageURL: String, completion: @escaping () -> Void) {
+    let db = Firestore.firestore()
+    
+    guard let currentUser = Auth.auth().currentUser else {
+        print("No user currently logged in.")
+        return
+    }
+    
+    let userRef = db.collection("users").document(currentUser.uid)
+    
+    userRef.updateData([
+        "imageURL": imageURL
+    ]) { error in
+        if let error = error {
+            print("Error updating user image URL: \(error)")
+        } else {
+            print("User image URL updated successfully")
+        }
+        
+        completion()
     }
 }
+
+
+
+
 

@@ -16,6 +16,7 @@ struct MainPageShoutView: View {
                     Section(header: Text("My Rants")) {
                         ForEach(viewModel.currentUserRants, id: \.self) { rant in
                             Text(rant)
+                            
                         }
                     }
                     
